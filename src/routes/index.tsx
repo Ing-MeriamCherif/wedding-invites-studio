@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 
 import envelope from "@/assets/envelope.png";
 import pearlBg from "@/assets/pearl-bg.jpg";
 import ornament from "@/assets/ornament.png";
+import music from "@/assets/wedding-music.mp3.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -58,8 +60,48 @@ function Ornament({ className = "" }: { className?: string }) {
   );
 }
 
+type Phase = "closed" | "sliding" | "open";
+
 function Invitation() {
-  const [opened, setOpened] = useState(false);
+  const [phase, setPhase] = useState<Phase>("closed");
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (phase !== "sliding") return;
+    const timer = window.setTimeout(() => setPhase("open"), 3200);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
+
+  const toggleMusic = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      try {
+        audio.volume = 0.45;
+        await audio.play();
+        setPlaying(true);
+      } catch {
+        setPlaying(false);
+      }
+    } else {
+      audio.pause();
+      setPlaying(false);
+    }
+  };
+
+  const openInvitation = () => {
+    if (phase !== "closed") return;
+    setPhase("sliding");
+    const audio = audioRef.current;
+    if (audio && audio.paused) {
+      audio.volume = 0.45;
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false));
+    }
+  };
 
   return (
     <main
@@ -74,27 +116,74 @@ function Invitation() {
     >
       <div className="absolute inset-0 bg-ivory/45" aria-hidden="true" />
 
-      {!opened ? (
-        <section className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-6">
-          <p className="animate-shimmer font-display text-lg tracking-widest text-gold">
+      <audio ref={audioRef} src={music.url} loop preload="auto" />
+
+      <button
+        type="button"
+        onClick={toggleMusic}
+        aria-label={playing ? "إيقاف الموسيقى" : "تشغيل الموسيقى"}
+        className="fixed left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-ivory/85 text-gold shadow-md backdrop-blur transition-colors hover:bg-ivory"
+      >
+        {playing ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+      </button>
+
+      {phase !== "open" ? (
+        <section className="relative flex min-h-screen flex-col items-center justify-center px-6">
+          <p
+            className="animate-shimmer font-display text-lg tracking-widest text-gold transition-opacity duration-700"
+            style={{ opacity: phase === "closed" ? 1 : 0 }}
+          >
             دعوة زفاف
           </p>
+
           <button
             type="button"
-            onClick={() => setOpened(true)}
+            onClick={openInvitation}
             aria-label="افتح الدعوة"
-            className="group w-full max-w-sm transition-transform duration-500 hover:scale-[1.03] focus:outline-none"
+            disabled={phase === "sliding"}
+            className="relative mt-8 w-full max-w-sm focus:outline-none"
+            style={{ perspective: "1200px" }}
           >
+            {/* the paper sliding slowly out of the envelope */}
+            <div
+              className="absolute inset-x-8 bottom-6 z-0 rounded-sm px-6 py-10 text-center"
+              style={{
+                backgroundImage: "var(--gradient-card)",
+                boxShadow: "var(--shadow-card)",
+                transform:
+                  phase === "sliding" ? "translateY(-78%) scale(1.02)" : "translateY(6%) scale(0.96)",
+                transition: "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+            >
+              <Ornament className="w-24" />
+              <p className="mt-4 font-display text-3xl leading-relaxed text-gold">
+                هيكل
+                <span className="mx-2 text-lg text-gold-soft">و</span>
+                ريان
+              </p>
+              <p className="mt-3 text-sm tracking-widest text-ink/70">25 — 26 سبتمبر</p>
+            </div>
+
+            {/* envelope stays in front */}
             <img
               src={envelope}
               alt="مغلف الدعوة"
               width={1024}
               height={1280}
-              className="h-auto w-full rounded-lg"
-              style={{ filter: "drop-shadow(var(--shadow-envelope))" }}
+              className="relative z-10 h-auto w-full rounded-lg transition-transform duration-700"
+              style={{
+                filter: "drop-shadow(var(--shadow-envelope))",
+                transform: phase === "sliding" ? "translateY(14px) scale(0.99)" : "none",
+              }}
             />
           </button>
-          <p className="text-sm text-ink/70">اضغط على المغلف لفتح الدعوة</p>
+
+          <p
+            className="mt-6 text-sm text-ink/70 transition-opacity duration-500"
+            style={{ opacity: phase === "closed" ? 1 : 0 }}
+          >
+            اضغط على المغلف لفتح الدعوة
+          </p>
         </section>
       ) : (
         <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-5 py-12">
@@ -156,7 +245,7 @@ function Invitation() {
 
           <button
             type="button"
-            onClick={() => setOpened(false)}
+            onClick={() => setPhase("closed")}
             className="mt-8 font-display text-sm tracking-widest text-gold underline-offset-8 hover:underline"
           >
             إغلاق الدعوة
