@@ -146,12 +146,12 @@ function Invitation() {
           >
             {/* the paper sliding slowly out of the envelope */}
             <div
-              className="absolute inset-x-8 bottom-6 z-0 rounded-sm px-6 pb-28 pt-6 text-center"
+              className="absolute inset-x-8 bottom-6 z-0 rounded-sm px-6 pb-8 pt-6 text-center"
               style={{
                 backgroundImage: "var(--gradient-card)",
                 boxShadow: "var(--shadow-card)",
                 transform:
-                  phase === "sliding" ? "translateY(-86%) scale(1.02)" : "translateY(6%) scale(0.96)",
+                  phase === "sliding" ? "translateY(-104%) scale(1.02)" : "translateY(6%) scale(0.96)",
                 transition: "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
