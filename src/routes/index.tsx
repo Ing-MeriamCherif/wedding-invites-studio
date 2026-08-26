@@ -151,7 +151,7 @@ function Invitation() {
                 backgroundImage: "var(--gradient-card)",
                 boxShadow: "var(--shadow-card)",
                 transform:
-                  phase === "sliding" ? "translateY(-104%) scale(1.02)" : "translateY(6%) scale(0.96)",
+                  phase === "sliding" ? "translateY(-152%) scale(1.02)" : "translateY(6%) scale(0.96)",
                 transition: "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
