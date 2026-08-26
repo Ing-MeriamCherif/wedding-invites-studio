@@ -146,22 +146,22 @@ function Invitation() {
           >
             {/* the paper sliding slowly out of the envelope */}
             <div
-              className="absolute inset-x-8 bottom-6 z-0 rounded-sm px-6 py-10 text-center"
+              className="absolute inset-x-8 bottom-6 z-0 rounded-sm px-6 pb-28 pt-6 text-center"
               style={{
                 backgroundImage: "var(--gradient-card)",
                 boxShadow: "var(--shadow-card)",
                 transform:
-                  phase === "sliding" ? "translateY(-78%) scale(1.02)" : "translateY(6%) scale(0.96)",
+                  phase === "sliding" ? "translateY(-86%) scale(1.02)" : "translateY(6%) scale(0.96)",
                 transition: "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
               <Ornament className="w-24" />
-              <p className="mt-4 font-display text-3xl leading-relaxed text-gold">
+              <p className="mt-2 font-display text-3xl leading-relaxed text-gold">
                 هيكل
                 <span className="mx-2 text-lg text-gold-soft">و</span>
                 ريان
               </p>
-              <p className="mt-3 text-sm tracking-widest text-ink/70">25 — 26 سبتمبر</p>
+              <p className="mt-2 text-sm tracking-widest text-ink/70">25 — 26 سبتمبر</p>
             </div>
 
             {/* envelope stays in front */}
