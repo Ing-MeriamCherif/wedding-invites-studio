@@ -193,7 +193,7 @@ function Invitation() {
             <div className="paper-content">
             <Ornament />
 
-            <h1 className="mt-8 font-display text-5xl leading-[1.5] text-gold">
+            <h1 className="mt-8 font-display text-5xl leading-[1.5] text-ink">
               هيكل
               <span className="mx-3 block text-2xl text-gold-soft">و</span>
               ريان
@@ -206,14 +206,14 @@ function Invitation() {
             </div>
             <p className="mt-3 text-lg tracking-widest text-ink/80">25 — 26 سبتمبر</p>
 
-            <p className="mt-10 font-display text-base leading-loose text-gold">
+            <p className="mt-10 font-display text-base leading-loose text-gold-deep">
               ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا
               إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾
             </p>
 
             <p className="mt-8 text-base leading-loose text-ink/85">
               يسرّ عائلة العريس وعائلة العروس دعوتكم لحضور حفل زفاف ولديهما
-              <span className="mt-2 block font-display text-2xl text-gold">هيكل &amp; ريان</span>
+              <span className="mt-2 block font-display text-2xl text-gold-deep">هيكل &amp; ريان</span>
               وتكتمل فرحتنا ومسرّتنا بتشريفكم ومشاركتكم لنا هذه اللحظات المباركة، وفق البرنامج
               التالي:
             </p>
@@ -221,7 +221,7 @@ function Invitation() {
             <div className="mt-10 space-y-9 text-right">
               {program.map((block) => (
                 <section key={block.day}>
-                  <h2 className="font-display text-xl text-gold">{block.day}</h2>
+                  <h2 className="font-display text-xl text-gold-deep">{block.day}</h2>
                   <span className="mt-2 block h-px w-full bg-gold-soft/60" />
                   <ul className="mt-4 space-y-4">
                     {block.events.map((event) => (
