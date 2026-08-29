@@ -188,7 +188,7 @@ function Invitation() {
         </section>
       ) : (
         <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-5 py-12">
-          <article className="paper-card animate-rise w-full overflow-hidden rounded-md px-7 py-12 text-center">
+          <article className="paper-card animate-rise w-full overflow-hidden rounded-md px-7 pb-12 pt-24 text-center">
             <img src={floralFrame} alt="" aria-hidden="true" className="paper-frame" />
             <div className="paper-content">
             <Ornament />
