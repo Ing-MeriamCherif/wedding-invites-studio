@@ -62,8 +62,9 @@
 }
 
 @theme inline {
-  --font-display: "Aref Ruqaa", serif;
-  --font-body: "El Messiri", sans-serif;
+  --font-display: "Aref Ruqaa", "Amiri", serif;
+  --font-body: "Amiri", "Scheherazade New", serif;
+  --font-latin: "Cormorant Garamond", Georgia, serif;
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-ivory: var(--ivory);
