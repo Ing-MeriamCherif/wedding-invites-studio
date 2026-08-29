@@ -190,6 +190,7 @@ function Invitation() {
         <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-5 py-12">
           <article className="paper-card animate-rise w-full overflow-hidden rounded-md px-7 py-12 text-center">
             <img src={floralFrame} alt="" aria-hidden="true" className="paper-frame" />
+            <div className="paper-content">
             <Ornament />
 
             <h1 className="mt-8 font-display text-5xl leading-[1.5] text-gold">
@@ -240,6 +241,7 @@ function Invitation() {
             </p>
 
             <Ornament className="mt-8 rotate-180" />
+            </div>
           </article>
 
           <button
