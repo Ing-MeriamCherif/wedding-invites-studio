@@ -67,18 +67,63 @@
   --font-latin: "Cormorant Garamond", Georgia, serif;
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
+  --color-gold-deep: var(--gold-deep);
   --color-ivory: var(--ivory);
   --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
 }
 
 :root {
   --gold: oklch(0.66 0.075 78);
   --gold-soft: oklch(0.8 0.045 85);
+  --gold-deep: oklch(0.52 0.08 72);
   --ivory: oklch(0.955 0.012 85);
   --ink: oklch(0.42 0.03 75);
-  --gradient-card: linear-gradient(160deg, oklch(0.975 0.01 88), oklch(0.93 0.018 84));
-  --shadow-card: 0 30px 70px -25px oklch(0.5 0.04 70 / 0.45);
+  --ink-soft: oklch(0.46 0.03 55);
+  --paper: oklch(0.975 0.012 85);
+  --paper-shade: oklch(0.935 0.02 82);
+  --gradient-card: radial-gradient(120% 90% at 50% 18%, oklch(0.987 0.011 85) 0%, oklch(0.963 0.016 83) 68%, oklch(0.937 0.02 82) 100%);
+  --shadow-card:
+    0 2px 6px oklch(0.3 0.02 60 / 0.25),
+    0 30px 60px -20px oklch(0.25 0.03 55 / 0.6),
+    0 60px 120px -40px oklch(0.2 0.03 55 / 0.5);
   --shadow-envelope: 0 25px 60px -20px oklch(0.5 0.04 70 / 0.5);
+}
+
+/* Wedding Echo paper texture: warm cream card with subtle paper grain */
+.paper-card {
+  position: relative;
+  background: var(--gradient-card);
+  box-shadow: var(--shadow-card);
+  isolation: isolate;
+}
+.paper-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+/* Floral gold border that frames the paper */
+.paper-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+.paper-content {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes rise {
