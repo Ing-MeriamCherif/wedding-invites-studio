@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 import envelope from "@/assets/envelope.png";
+import floralFrame from "@/assets/floral-frame.png";
 import pearlBg from "@/assets/pearl-bg.jpg";
 import ornament from "@/assets/ornament.png";
 import music from "@/assets/wedding-music.mp3.asset.json";
@@ -146,10 +147,8 @@ function Invitation() {
           >
             {/* the paper sliding slowly out of the envelope */}
             <div
-              className="absolute inset-x-8 bottom-6 z-0 rounded-sm px-6 pb-8 pt-6 text-center"
+              className="paper-card absolute inset-x-8 bottom-6 z-0 overflow-hidden rounded-md px-6 pb-8 pt-6 text-center"
               style={{
-                backgroundImage: "var(--gradient-card)",
-                boxShadow: "var(--shadow-card)",
                 transform:
                   phase === "sliding" ? "translateY(-152%) scale(1.02)" : "translateY(-45%) scale(0.96)",
                 opacity: phase === "closed" ? 0 : 1,
@@ -189,10 +188,8 @@ function Invitation() {
         </section>
       ) : (
         <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-5 py-12">
-          <article
-            className="animate-rise w-full rounded-sm px-7 py-12 text-center"
-            style={{ backgroundImage: "var(--gradient-card)", boxShadow: "var(--shadow-card)" }}
-          >
+          <article className="paper-card animate-rise w-full overflow-hidden rounded-md px-7 py-12 text-center">
+            <img src={floralFrame} alt="" aria-hidden="true" className="paper-frame" />
             <Ornament />
 
             <h1 className="mt-8 font-display text-5xl leading-[1.5] text-gold">
