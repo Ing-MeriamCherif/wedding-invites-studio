@@ -92,7 +92,6 @@
 
 /* Wedding Echo paper texture: warm cream card with subtle paper grain */
 .paper-card {
-  position: relative;
   background: var(--gradient-card);
   box-shadow: var(--shadow-card);
   isolation: isolate;
