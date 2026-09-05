@@ -28,7 +28,12 @@ export const Route = createFileRoute("/")({
   component: Invitation,
 });
 
-type Phase = "closed" | "sliding" | "open";
+type Phase = "closed" | "opening" | "sliding" | "open";
+
+/* geometry of the envelope inside the artwork, in % of the image box */
+const FLAP_CLIP = "polygon(3.4% 22.3%, 96.7% 22.3%, 50% 53.9%)";
+const FRONT_CLIP =
+  "polygon(3.4% 22.3%, 50% 53.9%, 96.7% 22.3%, 96.7% 77.3%, 3.4% 77.3%)";
 
 function Invitation() {
   const [phase, setPhase] = useState<Phase>("closed");
@@ -36,9 +41,15 @@ function Invitation() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (phase !== "sliding") return;
-    const timer = window.setTimeout(() => setPhase("open"), 3200);
-    return () => window.clearTimeout(timer);
+    if (phase === "opening") {
+      const timer = window.setTimeout(() => setPhase("sliding"), 1600);
+      return () => window.clearTimeout(timer);
+    }
+    if (phase === "sliding") {
+      const timer = window.setTimeout(() => setPhase("open"), 3200);
+      return () => window.clearTimeout(timer);
+    }
+    return;
   }, [phase]);
 
   const toggleMusic = async () => {
