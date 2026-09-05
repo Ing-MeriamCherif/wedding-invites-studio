@@ -71,7 +71,7 @@ function Invitation() {
 
   const openInvitation = () => {
     if (phase !== "closed") return;
-    setPhase("sliding");
+    setPhase("opening");
     const audio = audioRef.current;
     if (audio && audio.paused) {
       audio.volume = 0.45;
