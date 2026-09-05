@@ -3,9 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 import envelope from "@/assets/envelope.png";
-import floralFrame from "@/assets/floral-frame.png";
 import pearlBg from "@/assets/pearl-bg.jpg";
-import ornament from "@/assets/ornament.png";
+import invitationCard from "@/assets/invitation-card.png.asset.json";
 import music from "@/assets/wedding-music.mp3.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -28,38 +27,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Invitation,
 });
-
-const program = [
-  {
-    day: "الجمعة 25 سبتمبر",
-    events: [
-      { title: "عقد القران", place: "جامع الزمزمية", time: "بعد صلاة العصر مباشرة" },
-      { title: "مأدبة العروس", place: "قاعة دار زمان — عنتر", time: "بعد صلاة العصر" },
-      { title: "حنّة العروس", place: "قاعة مسايا — عنتر", time: "مساءً" },
-    ],
-  },
-  {
-    day: "السبت 26 سبتمبر",
-    events: [
-      { title: "مأدبة عشاء العريس", place: "قاعة La Marquise", time: "مساءً" },
-      { title: "حفل الزفاف", place: "قاعة La Marquise", time: "بعد المأدبة" },
-    ],
-  },
-];
-
-function Ornament({ className = "" }: { className?: string }) {
-  return (
-    <img
-      src={ornament}
-      alt=""
-      aria-hidden="true"
-      loading="lazy"
-      width={1152}
-      height={576}
-      className={`mx-auto h-auto w-40 opacity-80 ${className}`}
-    />
-  );
-}
 
 type Phase = "closed" | "sliding" | "open";
 
@@ -145,25 +112,23 @@ function Invitation() {
             className="relative mt-8 w-full max-w-sm focus:outline-none"
             style={{ perspective: "1200px" }}
           >
-            {/* the paper sliding slowly out of the envelope */}
-            <div
-              className="paper-card absolute inset-x-8 bottom-6 z-0 overflow-hidden rounded-md px-6 pb-8 pt-6 text-center"
+            {/* the real invitation paper sliding slowly out of the envelope */}
+            <img
+              src={invitationCard.url}
+              alt="دعوة زفاف هيكل و ريان"
+              width={1080}
+              height={1920}
+              className="paper-card absolute bottom-10 left-1/2 z-0 h-[300px] w-auto rounded-sm object-cover object-top"
               style={{
                 transform:
-                  phase === "sliding" ? "translateY(-152%) scale(1.02)" : "translateY(-45%) scale(0.96)",
+                  phase === "sliding"
+                    ? "translate(-50%, -92%)"
+                    : "translate(-50%, 8%)",
                 opacity: phase === "closed" ? 0 : 1,
                 transition:
                   "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease-out",
               }}
-            >
-              <Ornament className="w-24" />
-              <p className="mt-2 font-display text-3xl leading-relaxed text-gold">
-                هيكل
-                <span className="mx-2 text-lg text-gold-soft">و</span>
-                ريان
-              </p>
-              <p className="mt-2 text-sm tracking-widest text-ink/70">25 — 26 سبتمبر</p>
-            </div>
+            />
 
             {/* envelope stays in front */}
             <img
@@ -187,62 +152,14 @@ function Invitation() {
           </p>
         </section>
       ) : (
-        <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-5 py-12">
-          <article className="paper-card animate-rise w-full overflow-hidden rounded-md px-7 pb-12 pt-24 text-center">
-            <img src={floralFrame} alt="" aria-hidden="true" className="paper-frame" />
-            <div className="paper-content">
-            <Ornament />
-
-            <h1 className="mt-8 font-display text-5xl leading-[1.5] text-ink">
-              هيكل
-              <span className="mx-3 block text-2xl text-gold-soft">و</span>
-              ريان
-            </h1>
-
-            <div className="mt-8 flex items-center justify-center gap-3">
-              <span className="h-px w-10 bg-gold-soft" />
-              <p className="font-display text-xl text-ink">احفظوا التاريخ</p>
-              <span className="h-px w-10 bg-gold-soft" />
-            </div>
-            <p className="mt-3 text-lg tracking-widest text-ink/80">25 — 26 سبتمبر</p>
-
-            <p className="mt-10 font-display text-base leading-loose text-gold-deep">
-              ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا
-              إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾
-            </p>
-
-            <p className="mt-8 text-base leading-loose text-ink/85">
-              يسرّ عائلة العريس وعائلة العروس دعوتكم لحضور حفل زفاف ولديهما
-              <span className="mt-2 block font-display text-2xl text-gold-deep">هيكل &amp; ريان</span>
-              وتكتمل فرحتنا ومسرّتنا بتشريفكم ومشاركتكم لنا هذه اللحظات المباركة، وفق البرنامج
-              التالي:
-            </p>
-
-            <div className="mt-10 space-y-9 text-right">
-              {program.map((block) => (
-                <section key={block.day}>
-                  <h2 className="font-display text-xl text-gold-deep">{block.day}</h2>
-                  <span className="mt-2 block h-px w-full bg-gold-soft/60" />
-                  <ul className="mt-4 space-y-4">
-                    {block.events.map((event) => (
-                      <li key={event.title}>
-                        <p className="text-base font-medium text-ink">{event.title}</p>
-                        <p className="text-sm text-ink/75">{event.place}</p>
-                        <p className="text-sm text-ink/60">{event.time}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
-
-            <p className="mt-12 text-base leading-loose text-ink/85">
-              حضوركم يسعدنا ويشرّفنا، ودعواتكم الصادقة تضيء دربنا.
-            </p>
-
-            <Ornament className="mt-8 rotate-180" />
-            </div>
-          </article>
+        <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-5 py-10">
+          <img
+            src={invitationCard.url}
+            alt="دعوة زفاف هيكل و ريان — 25 و 26 سبتمبر"
+            width={1080}
+            height={1920}
+            className="paper-card animate-rise h-auto w-full rounded-md"
+          />
 
           <button
             type="button"
