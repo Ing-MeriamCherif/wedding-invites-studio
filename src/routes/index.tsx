@@ -118,7 +118,7 @@ function Invitation() {
               alt="دعوة زفاف هيكل و ريان"
               width={1080}
               height={1920}
-              className="paper-card absolute inset-x-10 bottom-8 z-0 h-auto w-auto rounded-md"
+              className="paper-card absolute inset-x-10 bottom-8 z-0 h-auto rounded-md"
               style={{
                 transform:
                   phase === "sliding"
