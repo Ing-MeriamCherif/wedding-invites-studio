@@ -3,9 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 import envelope from "@/assets/envelope.png";
-import floralFrame from "@/assets/floral-frame.png";
 import pearlBg from "@/assets/pearl-bg.jpg";
-import ornament from "@/assets/ornament.png";
+import invitationCard from "@/assets/invitation-card.png.asset.json";
 import music from "@/assets/wedding-music.mp3.asset.json";
 
 export const Route = createFileRoute("/")({
