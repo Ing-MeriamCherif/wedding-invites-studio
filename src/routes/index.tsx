@@ -28,7 +28,12 @@ export const Route = createFileRoute("/")({
   component: Invitation,
 });
 
-type Phase = "closed" | "sliding" | "open";
+type Phase = "closed" | "opening" | "sliding" | "open";
+
+/* geometry of the envelope inside the artwork, in % of the image box */
+const FLAP_CLIP = "polygon(3.4% 22.3%, 96.7% 22.3%, 50% 53.9%)";
+const FRONT_CLIP =
+  "polygon(3.4% 22.3%, 50% 53.9%, 96.7% 22.3%, 96.7% 77.3%, 3.4% 77.3%)";
 
 function Invitation() {
   const [phase, setPhase] = useState<Phase>("closed");
@@ -36,9 +41,15 @@ function Invitation() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (phase !== "sliding") return;
-    const timer = window.setTimeout(() => setPhase("open"), 3200);
-    return () => window.clearTimeout(timer);
+    if (phase === "opening") {
+      const timer = window.setTimeout(() => setPhase("sliding"), 1600);
+      return () => window.clearTimeout(timer);
+    }
+    if (phase === "sliding") {
+      const timer = window.setTimeout(() => setPhase("open"), 3200);
+      return () => window.clearTimeout(timer);
+    }
+    return;
   }, [phase]);
 
   const toggleMusic = async () => {
@@ -60,7 +71,7 @@ function Invitation() {
 
   const openInvitation = () => {
     if (phase !== "closed") return;
-    setPhase("sliding");
+    setPhase("opening");
     const audio = audioRef.current;
     if (audio && audio.paused) {
       audio.volume = 0.45;
@@ -108,40 +119,88 @@ function Invitation() {
             type="button"
             onClick={openInvitation}
             aria-label="افتح الدعوة"
-            disabled={phase === "sliding"}
+            disabled={phase !== "closed"}
             className="relative mt-8 w-full max-w-sm focus:outline-none"
-            style={{ perspective: "1200px" }}
           >
-            {/* the real invitation paper sliding slowly out of the envelope */}
-            <img
-              src={invitationCard.url}
-              alt="دعوة زفاف هيكل و ريان"
-              width={1080}
-              height={1920}
-              className="paper-card absolute bottom-10 left-1/2 z-0 h-[300px] w-auto rounded-sm object-cover object-top"
-              style={{
-                transform:
-                  phase === "sliding"
-                    ? "translate(-50%, -92%)"
-                    : "translate(-50%, 8%)",
-                opacity: phase === "closed" ? 0 : 1,
-                transition:
-                  "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease-out",
-              }}
-            />
+            <div
+              className="relative w-full"
+              style={{ aspectRatio: "1024 / 1280", perspective: "1400px" }}
+            >
+              {/* envelope back, gives the outer silhouette and shadow */}
+              <img
+                src={envelope}
+                alt="مغلف الدعوة"
+                width={1024}
+                height={1280}
+                className="absolute inset-0 z-0 h-full w-full"
+                style={{ filter: "drop-shadow(var(--shadow-envelope))" }}
+              />
 
-            {/* envelope stays in front */}
-            <img
-              src={envelope}
-              alt="مغلف الدعوة"
-              width={1024}
-              height={1280}
-              className="relative z-10 h-auto w-full rounded-lg transition-transform duration-700"
-              style={{
-                filter: "drop-shadow(var(--shadow-envelope))",
-                transform: phase === "sliding" ? "translateY(14px) scale(0.99)" : "none",
-              }}
-            />
+              {/* shaded interior revealed once the flap lifts */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-[1]"
+                style={{
+                  clipPath: FLAP_CLIP,
+                  background:
+                    "linear-gradient(180deg, oklch(0.84 0.02 82) 0%, oklch(0.92 0.015 84) 55%, oklch(0.96 0.012 85) 100%)",
+                }}
+              />
+
+              {/* the invitation card, clipped so it stays hidden inside the pocket */}
+              <div
+                className="absolute left-0 right-0 z-[5] overflow-hidden"
+                style={{ top: "-180%", bottom: "22.7%" }}
+              >
+                <img
+                  src={invitationCard.url}
+                  alt="دعوة زفاف هيكل و ريان"
+                  width={1080}
+                  height={1920}
+                  className="paper-card absolute bottom-0 left-1/2 w-[36%] rounded-sm"
+                  style={{
+                    transform:
+                      phase === "sliding"
+                        ? "translate(-50%, -68%)"
+                        : "translate(-50%, 8%)",
+                    opacity: phase === "closed" ? 0 : 1,
+                    transition:
+                      "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease-out",
+                  }}
+                />
+              </div>
+
+              {/* front pocket stays in front of the card */}
+              <img
+                src={envelope}
+                alt=""
+                aria-hidden="true"
+                width={1024}
+                height={1280}
+                className="absolute inset-0 z-10 h-full w-full"
+                style={{ clipPath: FRONT_CLIP }}
+              />
+
+              {/* the flap that lifts open */}
+              <img
+                src={envelope}
+                alt=""
+                aria-hidden="true"
+                width={1024}
+                height={1280}
+                className="absolute inset-0 h-full w-full"
+                style={{
+                  clipPath: FLAP_CLIP,
+                  transformOrigin: "50% 22.3%",
+                  transform:
+                    phase === "closed" ? "rotateX(0deg)" : "rotateX(-166deg)",
+                  transition: "transform 1500ms cubic-bezier(0.5, 0, 0.2, 1)",
+                  zIndex: phase === "closed" ? 20 : 2,
+                  filter:
+                    phase === "closed" ? "none" : "brightness(0.97) saturate(0.98)",
+                }}
+              />
+            </div>
           </button>
 
           <p
