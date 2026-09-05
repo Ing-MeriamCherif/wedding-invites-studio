@@ -118,12 +118,12 @@ function Invitation() {
               alt="دعوة زفاف هيكل و ريان"
               width={1080}
               height={1920}
-              className="paper-card absolute inset-x-10 bottom-8 z-0 h-auto rounded-md"
+              className="paper-card absolute bottom-10 left-1/2 z-0 h-[340px] w-auto rounded-sm object-cover object-top"
               style={{
                 transform:
                   phase === "sliding"
-                    ? "translateY(-88%) scale(1.02)"
-                    : "translateY(-8%) scale(0.96)",
+                    ? "translate(-50%, -100%)"
+                    : "translate(-50%, 8%)",
                 opacity: phase === "closed" ? 0 : 1,
                 transition:
                   "transform 2600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease-out",
